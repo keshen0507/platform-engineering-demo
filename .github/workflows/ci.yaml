@@ -1,0 +1,25 @@
+name: CI
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore
+        run: dotnet restore platform-engineering-demo.sln
+      
+      - name: Build
+        run: dotnet build platform-engineering-demo.sln --configuration Release
+      
+      - name: Test
+        run: dotnet test platform-engineering-demo.sln --no-build --configuration Release --collect "XPlat Code Coverage" --results-directory ./TestResults
