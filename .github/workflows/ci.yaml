@@ -22,4 +22,9 @@ jobs:
         run: dotnet build platform-engineering-demo.sln --configuration Release
       
       - name: Test
-        run: dotnet test platform-engineering-demo.sln --no-build --configuration Release --collect "XPlat Code Coverage" --results-directory ./TestResults
+        run: dotnet test platform-engineering-demo.sln --no-build --configuration Release /p:CollectCoverage=true /p:Threshold=20 /p:ThresholdType=line --collect "XPlat Code Coverage" --results-directory ./TestResults
+        
+      - name: Install ReportGenerator
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
